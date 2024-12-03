@@ -87,6 +87,7 @@ public class OwnerDB extends Database implements OwnerFunctions {
                         addBorder();
                         System.out.println("Updated value:\n");
                         displayOwnerDetails(OwnerID);
+                        addBorder();
                     }
                     case "2" -> {
                         addBorder();
@@ -97,6 +98,7 @@ public class OwnerDB extends Database implements OwnerFunctions {
                         addBorder();
                         System.out.println("Updated value:\n");
                         displayOwnerDetails(OwnerID);
+                        addBorder();
                     }
                     case "0" -> {
                         System.out.println("Going back to Home Page...");
@@ -108,11 +110,12 @@ public class OwnerDB extends Database implements OwnerFunctions {
                     System.out.println("Terminating editing process...");
                     return;
                 }
+                addBorder();
             }
         }
     }
 
-    // Display all Owners
+    // Prints all Owners
     @Override
     public void displayOwner() throws IOException {
         addBorder();
@@ -123,6 +126,7 @@ public class OwnerDB extends Database implements OwnerFunctions {
         }
     }
 
+    // Prints specific owner details with @param OwnerID
     @Override
     public void displayOwnerDetails(String OwnerID) throws IOException {
         owner= owners.get(OwnerID);
@@ -130,6 +134,7 @@ public class OwnerDB extends Database implements OwnerFunctions {
         System.out.println(owner.toString());
     }
 
+    // Links units to owners
     @Override
     public void registerUnits(String UnitNo, String OwnerID) throws IOException {
         while(true){
@@ -169,10 +174,12 @@ public class OwnerDB extends Database implements OwnerFunctions {
             }
             unit.setOwnerID(OwnerID);
             owner.setOwnedUnits(UnitNo,unit);
+            System.out.println("Unit registration successful.");
             return;
         }
     }
 
+    // Prints owned units of @param OwnerID
     @Override
     public void displayOwnedUnits(String OwnerID) throws IOException {
         owner= owners.get(OwnerID);

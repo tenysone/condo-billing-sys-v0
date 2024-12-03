@@ -20,12 +20,17 @@ public class Main {
     public static void main(String[] args) throws IOException {
         DBManager.addDefault();
         while(true){
+            addDoubleBorder();
+            System.out.printf("%103s %n","Welcome to Axis Residence Billing System");
+            addDoubleBorder();
+
             System.out.println("""
                     1.Log-in as Homeowner
                     2.Log-in as Admin
                     0.Exit
                     """);
             String choice= getNonEmpty("What would you like to do?");
+            addDoubleBorder();
             if(choice.equals("1")){
                 owner.loginPage();
             } else if(choice.equals("2")){

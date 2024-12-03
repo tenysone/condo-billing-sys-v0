@@ -64,10 +64,8 @@ public class DBManager extends Database implements
 
             if(!willDoAgain("Add another Unit?")){
                 System.out.println("Terminating Unit addition process...");
-                addBorder();
                 return;
             }
-            addBorder();
         }
     } //admin
 
@@ -113,7 +111,6 @@ public class DBManager extends Database implements
 
             if(!willDoAgain("Add another Owner?")){
                 System.out.println("Terminating Owner addition process...");
-                addBorder();
                 return;
             }
         }
@@ -162,15 +159,21 @@ public class DBManager extends Database implements
         ownerDB.displayOwnedUnits(OwnerID);
     } //owner
 
+    // Fetch ownerID with @param OwnerID
     public String getOwnerID(String OwnerID){
         owner= owners.get(OwnerID);
         return owner.getName();
     }
 
+    // Returns true/false whether owners contain @param Username
     public boolean getOwnerKey(String Username){
         return owners.containsKey(Username);
     }
 
+    /*
+    *   Takes user-input for addition of dues
+    *   Has validation checks to filter valid values
+    *   */
     @Override
     public void issueDue() throws IOException {
         while(true){
@@ -239,29 +242,50 @@ public class DBManager extends Database implements
             due= new Due(DueRefNo,unit,DueDate,IssueDate,WaterDue,ElecDues,AssocDues);
             dueDB.issueDue(due);
 
+            addBorder();
             if(!willDoAgain("Issue another Bill?")){
                 System.out.println("Terminating Billing process...");
                 return;
             }
-
             addBorder();
         }
     }
 
+    /*
+    *   */
     @Override
     public void issuePenalty(String DueRefNo) throws IOException {
-        System.out.print("Enter Due Reference Number: ");
-        DueRefNo= br.readLine();
-        dueDB.issuePenalty(DueRefNo);
-        addBorder();
+        while(true){
+            System.out.print("Enter Due Reference Number: ");
+            DueRefNo= br.readLine();
+            if (!dues.containsKey(DueRefNo)) {
+                System.out.println("Due Reference does not exist...");
+                DueRefNo= getNewValue("Enter a new Due Reference Number");
+                if(DueRefNo.isEmpty()){
+                    System.out.println("Terminating Billing Process...");
+                    return;
+                }
+                break;
+            }
+            dueDB.issuePenalty(DueRefNo);
+
+            addBorder();
+            if(!willDoAgain("Issue another Penalty?")){
+                System.out.println("Terminating Billing Process...");
+                return;
+            }
+            addBorder();
+        }
     }
 
+    // Prints specific due for each unit/owner
     @Override
     public void displayDue(String UnitNo, String OwnerID) throws IOException {
         System.out.print("Enter Unit Number: ");
         UnitNo= br.readLine();
         dueDB.displayDue(UnitNo,OwnerID);
     }
+
 
     @Override
     public void issuePayment(String ownerID) throws IOException {
@@ -338,20 +362,26 @@ public class DBManager extends Database implements
             due.setPayment(payment);
             due.setStatus("PAID");
 
+            addBorder();
             System.out.println("Payment Success.");
+            addBorder();
 
             if(!willDoAgain("Issue another Payment?")){
                 System.out.println("Terminating Payment process...");
+                addBorder();
                 return;
             }
+            addBorder();
         }
     }
 
+    // Prints all bills, including payment status
     @Override
     public void displayPaymentRecord() throws IOException {
         paymentDB.displayPaymentRecord();
     }
 
+    // Checks for valid reference number
     private boolean isValidRef(String DueRefNo, String OwnerID){
         while(true){
             if(!dues.containsKey(DueRefNo)){
@@ -374,6 +404,7 @@ public class DBManager extends Database implements
         }
     }
 
+    // Checks for valid payment amount
     private boolean isValidPayment(String DueRefNo,double Payment){
         due= dues.get(DueRefNo);
 

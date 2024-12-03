@@ -17,16 +17,7 @@ public class PaymentDB extends Database implements PaymentFunctions {
 
     }
 
-    public void issuePayment(String PayRefNo, Payment payment) throws IOException {
-        PayRefNo= payment.getPayRefNo();
-
-        payments.put(PayRefNo,payment);
-        due.setPayment(payment);
-        due.setStatus("PAID");
-
-        System.out.println("Payment Success.");
-    }
-
+    // Prints all bills and payment status
     @Override
     public void displayPaymentRecord() throws IOException {
         addBorder();

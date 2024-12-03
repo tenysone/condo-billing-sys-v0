@@ -13,6 +13,7 @@ import static utility.Util.*;
 
 public class DueDB extends Database implements DueFunctions {
 
+    // Adds default due values
     @Override
     public void issueDue() throws IOException {
         PrintStream originalOut = System.out;
@@ -36,59 +37,55 @@ public class DueDB extends Database implements DueFunctions {
         System.setOut(originalOut);
     }
 
+    // Issues due values individually
     public void issueDue(Due due) throws IOException {
         while(true){
             unit = due.getUnit();
 
-            String OwnerID = unit.getOwnerID();
-            String DueRefNo = due.getDueRefNo();
+            String OwnerID = unit.getOwnerID();     // Sets ownerID to specific unit instance
+            String DueRefNo = due.getDueRefNo();    // Fetches DueRefNo to @arg due
 
             due.setOwnerID(OwnerID);
 
             dues.put(DueRefNo, due);
 
-            if(unit instanceof Unpaid){
+            if(unit instanceof Unpaid){             // Sets monthly installment from Unpaid subclasses
                 due.setMonthlyInstallment(((Unpaid) unit).getMonthlyInstallment());
             }
 
             calculateTotal(DueRefNo);
 
             unit.setDues(DueRefNo, due);
-            System.out.println("\nBill issued successfully.");
+            System.out.println("Bill issued successfully.");
             return;
         }
     }
 
+    /*
+    *   Sets penalty field to due instance
+    *   Checks if payment is already set to due
+    * */
     @Override
     public void issuePenalty(String DueRefNo) throws IOException {
-        // Value fetchers
         due = dues.get(DueRefNo);
         unit = due.getUnit();
-
-        //Null checkers
-        if (unit == null) {
-            addBorder();
-            System.out.println("Unit does not exist...");
-            return;
-        }
-
-        if (due == null) {
-            addBorder();
-            System.out.println("Due Reference does not exist...");
-            return;
-        }
 
         //Check if status is already paid
         if (due.getStatus().equals("PAID")) {
             addBorder();
-            System.out.println("Bill is already Paid for...");
+            System.out.println("Due is already paid for.");
             System.out.println(due.getStatus());
         } else { //Issue penalty
             due.setPenalty(due.getTotalBill() * 0.10);
             calculateTotal(DueRefNo);
+            System.out.println("Penalty issued successfully.");
         }
     }
 
+    /*
+    *   Prints specific dues for each unit/owner
+    *   Has validation checks to print only valid dues
+    *   */
     @Override
     public void displayDue(String UnitNo, String OwnerID) throws IOException {
         unit = units.get(UnitNo);
@@ -124,12 +121,12 @@ public class DueDB extends Database implements DueFunctions {
     public void calculateTotal(String DueRefNo) {
 
         due = dues.get(DueRefNo);
-        unit = due.getUnit();
+        unit = due.getUnit();                               // Fetch unit from associated unit in dues
 
         double MI;
         if (unit instanceof Unpaid) {
-            MI = ((Unpaid) unit).getMonthlyInstallment(); // Fetch value of monthly installment
-            due.setMonthlyInstallment(MI); // Assign monthly installment to due
+            MI = ((Unpaid) unit).getMonthlyInstallment();   // Fetch value of monthly installment
+            due.setMonthlyInstallment(MI);                  // Assign monthly installment to due
         }
 
         double WaterDue = due.getWaterDue();
@@ -137,8 +134,8 @@ public class DueDB extends Database implements DueFunctions {
         double AssocDue = due.getAssocDue();
         double MonthlyInstallment = due.getMonthlyInstallment();
         double Penalties = due.getPenalty();
-        double TotalBill = WaterDue + ElecDue + AssocDue + +MonthlyInstallment + Penalties;
+        double TotalBill = WaterDue + ElecDue + AssocDue + +MonthlyInstallment + Penalties; // Computational field for total bill
 
-        due.setTotalBill(TotalBill);
+        due.setTotalBill(TotalBill);                        // Set new TotalBill
     }
 }

@@ -20,11 +20,11 @@ public class OwnerUI implements UserFunctions {
     @Override
     public void mainPage(String ownerID) throws IOException {
         String name= dbManager.getOwnerID(ownerID);
-        addDoubleBorder();
-        System.out.printf("%100s %n","Welcome " + name);
-        addDoubleBorder();
-
         while(true) {
+            addDoubleBorder();
+            System.out.printf("%100s %n","Welcome " + name);
+            addDoubleBorder();
+
             System.out.println("""
                     1.View my Units
                     2.View my Bills
@@ -94,14 +94,17 @@ public class OwnerUI implements UserFunctions {
                 } else{
                     if(willDoAgain("Terminate Owner Log-in Process?")){
                         System.out.println("Going back to Home Page...");
+                        addBorder();
                         return;
                     }
+                    addBorder();
                 }
             } else{
                 if(willDoAgain("Terminate Owner Log-in Process?")){
                     System.out.println("Going back to Home Page...");
                     return;
                 }
+                addBorder();
             }
         }
     }
@@ -125,9 +128,11 @@ public class OwnerUI implements UserFunctions {
             } else{
                 System.out.println("Invalid Username.");
                 if(!willDoAgain("Enter another Username?")){
+                    addBorder();
                     return false;
                 }
             }
+            addBorder();
         }
     }
 
@@ -149,9 +154,11 @@ public class OwnerUI implements UserFunctions {
             } else{
                 System.out.println("Invalid Password.");
                 if(!willDoAgain("Enter another Password?")){
+                    addBorder();
                     return false;
                 }
             }
+            addBorder();
         }
     }
 }

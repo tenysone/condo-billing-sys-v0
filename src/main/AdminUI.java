@@ -19,7 +19,7 @@ public class AdminUI implements UserFunctions {
     public void mainPage(String welcomeName) throws IOException {
         while(true){
             addDoubleBorder();
-            System.out.printf("%90s %n","Welcome " + welcomeName);
+            System.out.printf("%88s %n","Welcome " + welcomeName);
             addDoubleBorder();
 
             System.out.println("""
@@ -79,6 +79,7 @@ public class AdminUI implements UserFunctions {
                     return;
                 }
             }
+            addBorder();
         }
     }
 
@@ -100,10 +101,13 @@ public class AdminUI implements UserFunctions {
             } else{
                 System.out.println("Invalid Username.");
                 if(!willDoAgain("Enter another Username?")){
+                  addBorder();
                   return false;
                 }
             }
+            addBorder();
         }
+
     }
 
     /*
@@ -124,20 +128,25 @@ public class AdminUI implements UserFunctions {
             } else{
                 System.out.println("Invalid Password.");
                 if(!willDoAgain("Enter another Password?")){
+                    addBorder();
                     return false;
                 }
             }
+            addBorder();
         }
     }
 
-    /*
-    *   Methods
-    *   - Contains specific functions related to key areas
+    /*  Methods below
+    *   - Contains specific functions related to key entities
     *   @param none
     *   @return none
     */
     public void units() throws IOException {
         while(true) {
+            addBorder();
+            System.out.printf("%85s %n","UNITS");
+            addBorder();
+
             System.out.println("""
                     1.View All Units
                     2.Add New Units
@@ -150,7 +159,9 @@ public class AdminUI implements UserFunctions {
                     dbManager.displayUnit();
                 }
                 case "2" -> {
+                    addBorder();
                     dbManager.addUnit();
+                    addBorder();
                 }
                 case "0" -> {
                     System.out.println("Going back to Home Page...");
@@ -163,6 +174,9 @@ public class AdminUI implements UserFunctions {
 
     public void owners() throws IOException {
         while(true) {
+            addBorder();
+            System.out.printf("%85s %n","OWNERS");
+            addBorder();
             System.out.println("""
                     1.View All Owners
                     2.Add New Owners
@@ -173,14 +187,20 @@ public class AdminUI implements UserFunctions {
 
             switch (choice) {
                 case "1" -> {
+                    addBorder();
                     dbManager.displayOwner();
+                    addBorder();
                 }
                 case "2" -> {
+                    addBorder();
                     dbManager.addOwner();
+                    addBorder();
                 }
                 case "3" -> {
+                    addBorder();
                     String filler1= "", filler2= "";
                     dbManager.registerUnits(filler1,filler2);
+                    addBorder();
                 }
                 case "0" -> {
                     System.out.println("Going back to Home Page...");
@@ -193,6 +213,10 @@ public class AdminUI implements UserFunctions {
 
     public static void dues() throws IOException {
         while(true) {
+            addBorder();
+            System.out.printf("%85s %n","BILLS");
+            addBorder();
+
             System.out.println("""
                     1.View All Bills
                     2.Issue New Bills
@@ -206,11 +230,15 @@ public class AdminUI implements UserFunctions {
                     dbManager.displayPaymentRecord();
                 }
                 case "2" -> {
+                    addBorder();
                     dbManager.issueDue();
+                    addBorder();
                 }
                 case "3" -> {
+                    addBorder();
                     String filler= "";
                     dbManager.issuePenalty(filler);
+                    addBorder();
                 }
                 case "0" -> {
                     System.out.println("Going back to Home Page...");
