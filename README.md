@@ -1,4 +1,4 @@
-# Axis Residence Condominium Billing System
+# Condominium Billing System
 
 A terminal-based condominium billing management system built in Java for the **OOP Course — December 2024**.
 
